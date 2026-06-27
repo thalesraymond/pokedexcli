@@ -9,7 +9,7 @@ type CLICommand struct {
 type CLICommandInterface interface {
 	GetName() string
 	GetDescription() string
-	Execute() error
+	Execute(args []string) error
 }
 
 func (c *CLICommand) GetName() string {

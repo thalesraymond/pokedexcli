@@ -15,7 +15,7 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 
-	for true {
+	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		userInput := scanner.Text()
@@ -28,9 +28,5 @@ func main() {
 		} else {
 			fmt.Println("Unknown command")
 		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error reading input:", err)
 	}
 }

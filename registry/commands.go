@@ -1,10 +1,5 @@
 package registry
 
-import (
-	"fmt"
-	"os"
-)
-
 func GetCLICommands() map[string]CLICommand {
 	commands := map[string]CLICommand{
 		"exit": {
@@ -17,24 +12,19 @@ func GetCLICommands() map[string]CLICommand {
 			description: "Display a help message",
 			callback:    commandHelp,
 		},
+
+		"map": {
+			name:        "map",
+			description: "Display the available locations",
+			callback:    commandMap,
+		},
+
+		"mapback": {
+			name:        "mapback",
+			description: "Display the previous available locations",
+			callback:    commandMapBack,
+		},
 	}
 
 	return commands
-}
-
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	fmt.Println("")
-	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("Available commands:")
-	commands := GetCLICommands()
-	for _, command := range commands {
-		fmt.Printf("  %s: %s\n", command.name, command.description)
-	}
-	return nil
 }
