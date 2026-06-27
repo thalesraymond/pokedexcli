@@ -15,6 +15,8 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 
+	pokedexContext := &registry.PokedexContext{}
+
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -22,7 +24,7 @@ func main() {
 		firstWord := strings.TrimSpace(strings.ToLower(strings.Fields(userInput)[0]))
 
 		if command, ok := commands[firstWord]; ok {
-			if err := command.Execute(); err != nil {
+			if err := command.Execute(pokedexContext); err != nil {
 				fmt.Fprintln(os.Stderr, "Error executing command:", err)
 			}
 		} else {

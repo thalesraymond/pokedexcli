@@ -6,12 +6,15 @@ import (
 	"github.com/thalesraymond/pokedexcli/api"
 )
 
-var previousUrl *string = nil
-
-func commandMapBack() error {
+func commandMapBack(cfg *PokedexContext) error {
 	client := api.NewPokedexClient()
 
-	locationAreaResponse, err := client.GetLocations(previousUrl)
+	if cfg.LocationAreasPreviousURL == nil {
+		fmt.Println("you're on the first page")
+		return nil
+	}
+
+	locationAreaResponse, err := client.GetLocations(cfg.LocationAreasPreviousURL)
 
 	if err != nil {
 		return err
@@ -21,13 +24,14 @@ func commandMapBack() error {
 		fmt.Println(locationArea.Name)
 	}
 
+	if locationAreaResponse.Next != nil {
+		cfg.LocationAreasNextURL = locationAreaResponse.Next
+	}
 	if locationAreaResponse.Previous != nil {
-		previousUrl = locationAreaResponse.Previous
+		cfg.LocationAreasPreviousURL = locationAreaResponse.Previous
 	}
 
-	for _, locationArea := range locationAreaResponse.Results {
-		fmt.Println(locationArea.Name)
-	}
+
 
 	return nil
 }

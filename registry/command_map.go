@@ -6,12 +6,10 @@ import (
 	"github.com/thalesraymond/pokedexcli/api"
 )
 
-var nextURL *string = nil
-
-func commandMap() error {
+func commandMap(cfg *PokedexContext) error {
 	client := api.NewPokedexClient()
 
-	locationAreaResponse, err := client.GetLocations(nextURL)
+	locationAreaResponse, err := client.GetLocations(cfg.LocationAreasNextURL)
 
 	if err != nil {
 		return err
@@ -22,12 +20,13 @@ func commandMap() error {
 	}
 
 	if locationAreaResponse.Next != nil {
-		nextURL = locationAreaResponse.Next
+		cfg.LocationAreasNextURL = locationAreaResponse.Next
+	}
+	if locationAreaResponse.Previous != nil {
+		cfg.LocationAreasPreviousURL = locationAreaResponse.Previous
 	}
 
-	for _, locationArea := range locationAreaResponse.Results {
-		fmt.Println(locationArea.Name)
-	}
+
 
 	return nil
 }

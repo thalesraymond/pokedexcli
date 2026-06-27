@@ -3,13 +3,13 @@ package registry
 type CLICommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(cfg *PokedexContext) error
 }
 
 type CLICommandInterface interface {
 	GetName() string
 	GetDescription() string
-	Execute(args []string) error
+	Execute(pokedexContext *PokedexContext) error
 }
 
 func (c *CLICommand) GetName() string {
@@ -20,6 +20,6 @@ func (c *CLICommand) GetDescription() string {
 	return c.description
 }
 
-func (c *CLICommand) Execute() error {
-	return c.callback()
+func (c *CLICommand) Execute(pokedexContext *PokedexContext) error {
+	return c.callback(pokedexContext)
 }
