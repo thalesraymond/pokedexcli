@@ -19,9 +19,15 @@ func main() {
 
 	for {
 		fmt.Print("Pokedex > ")
-		scanner.Scan()
+		if !scanner.Scan() {
+			break
+		}
 		userInput := scanner.Text()
-		firstWord := strings.TrimSpace(strings.ToLower(strings.Fields(userInput)[0]))
+		fields := strings.Fields(userInput)
+		if len(fields) == 0 {
+			continue
+		}
+		firstWord := strings.ToLower(fields[0])
 
 		if command, ok := commands[firstWord]; ok {
 			if err := command.Execute(pokedexContext); err != nil {
@@ -30,5 +36,9 @@ func main() {
 		} else {
 			fmt.Println("Unknown command")
 		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error reading input:", err)
 	}
 }
