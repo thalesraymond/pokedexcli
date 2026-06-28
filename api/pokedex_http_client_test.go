@@ -12,6 +12,7 @@ func TestNewPokedexClient_Defaults(t *testing.T) {
 
 	if client == nil {
 		t.Fatal("expected non-nil client")
+		return
 	}
 	if client.userAgent != "pokedex-cli/1.0" {
 		t.Errorf("unexpected userAgent: got %q, want %q", client.userAgent, "pokedex-cli/1.0")

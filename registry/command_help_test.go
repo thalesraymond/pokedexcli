@@ -16,11 +16,16 @@ func captureStdout(fn func()) string {
 
 	fn()
 
-	w.Close()
+	err := w.Close()
+	if err != nil {
+		panic(err)
+	}
 	os.Stdout = old
 
 	var buf bytes.Buffer
-	io.Copy(&buf, r)
+	if _, err := io.Copy(&buf, r); err != nil {
+		panic(err)
+	}
 	return buf.String()
 }
 
@@ -34,7 +39,10 @@ func TestCommandHelp_ReturnsNil(t *testing.T) {
 func TestCommandHelp_PrintsWelcomeHeader(t *testing.T) {
 	cfg := &PokedexContext{}
 	output := captureStdout(func() {
-		commandHelp(cfg)
+		err := commandHelp(cfg)
+		if err != nil {
+			t.Errorf("expected commandHelp to return nil, got %v", err)
+		}
 	})
 
 	if !strings.Contains(output, "Welcome to the Pokedex!") {
@@ -49,7 +57,10 @@ func TestCommandHelp_PrintsWelcomeHeader(t *testing.T) {
 func TestCommandHelp_PrintsAllCommands(t *testing.T) {
 	cfg := &PokedexContext{}
 	output := captureStdout(func() {
-		commandHelp(cfg)
+		err := commandHelp(cfg)
+		if err != nil {
+			t.Errorf("expected commandHelp to return nil, got %v", err)
+		}
 	})
 
 	commands := GetCLICommands()
@@ -71,6 +82,9 @@ func TestCommandHelp_NilContextDoesNotPanic(t *testing.T) {
 	}()
 
 	captureStdout(func() {
-		commandHelp(nil)
+		err := commandHelp(nil)
+		if err != nil {
+			t.Errorf("expected commandHelp to return nil, got %v", err)
+		}
 	})
 }
