@@ -68,6 +68,15 @@ func (c *PokedexClient) GetLocations(url *string) (LocationAreaResponse, error) 
 		urlStr = *url
 	}
 
+	if val, ok := c.cache.Get(urlStr); ok {
+		var locationAreaResponse LocationAreaResponse
+		err := json.Unmarshal(val, &locationAreaResponse)
+		if err != nil {
+			return LocationAreaResponse{}, err
+		}
+		return locationAreaResponse, nil
+	}
+
 	res, err := c.httpClient.Get(urlStr)
 	if err != nil {
 		return LocationAreaResponse{}, err
@@ -79,6 +88,8 @@ func (c *PokedexClient) GetLocations(url *string) (LocationAreaResponse, error) 
 		return LocationAreaResponse{}, err
 	}
 
+	c.cache.Set(urlStr, body)
+
 	var locationAreaResponse LocationAreaResponse
 	err = json.Unmarshal(body, &locationAreaResponse)
 
@@ -87,4 +98,39 @@ func (c *PokedexClient) GetLocations(url *string) (LocationAreaResponse, error) 
 	}
 
 	return locationAreaResponse, nil
+}
+
+func (c *PokedexClient) GetLocationArea(locationAreaName string) (LocationAreaDto, error) {
+	urlStr := Endpoints["location-area"] + "/" + locationAreaName
+
+	if val, ok := c.cache.Get(urlStr); ok {
+		var locationAreaDto LocationAreaDto
+		err := json.Unmarshal(val, &locationAreaDto)
+		if err != nil {
+			return LocationAreaDto{}, err
+		}
+		return locationAreaDto, nil
+	}
+
+	res, err := c.httpClient.Get(urlStr)
+	if err != nil {
+		return LocationAreaDto{}, err
+	}
+	defer res.Body.Close() //nolint:errcheck
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return LocationAreaDto{}, err
+	}
+
+	c.cache.Set(urlStr, body)
+
+	var locationAreaDto LocationAreaDto
+	err = json.Unmarshal(body, &locationAreaDto)
+
+	if err != nil {
+		return locationAreaDto, err
+	}
+
+	return locationAreaDto, nil
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
-func commandMap(cfg *PokedexContext) error {
+func commandMap(cfg *PokedexContext, args ...string) error {
 	client := api.NewPokedexClient()
 
 	locationAreaResponse, err := client.GetLocations(cfg.LocationAreasNextURL)

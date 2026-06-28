@@ -24,6 +24,12 @@ func GetCLICommands() map[string]CLICommand {
 			description: "Display the previous available locations",
 			callback:    commandMapBack,
 		},
+
+		"explore": {
+			name:        "explore",
+			description: "Explore a location area",
+			callback:    commandExplore,
+		},
 	}
 
 	return commands

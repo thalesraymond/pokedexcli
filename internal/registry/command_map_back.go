@@ -6,7 +6,7 @@ import (
 	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
-func commandMapBack(cfg *PokedexContext) error {
+func commandMapBack(cfg *PokedexContext, args ...string) error {
 	client := api.NewPokedexClient()
 
 	if cfg.LocationAreasPreviousURL == nil {

@@ -30,7 +30,7 @@ func main() {
 		firstWord := strings.ToLower(fields[0])
 
 		if command, ok := commands[firstWord]; ok {
-			if err := command.Execute(pokedexContext); err != nil {
+			if err := command.Execute(pokedexContext, fields[1:]...); err != nil {
 				fmt.Fprintln(os.Stderr, "Error executing command:", err)
 			}
 		} else {
