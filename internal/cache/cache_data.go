@@ -16,9 +16,14 @@ type CacheData struct {
 }
 
 func NewCacheData() *CacheData {
-	return &CacheData{
+	cache := &CacheData{
 		data: make(map[string]cacheEntry),
 	}
+
+	// Start the reaper goroutine to clean up old entries
+	go cache.reapLoop()
+
+	return cache
 }
 
 func (c *CacheData) Get(key string) ([]byte, bool) {
