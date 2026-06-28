@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/thalesraymond/pokedexcli/api"
+	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
 // buildLocationResponse is a convenience builder for LocationAreaResponse test fixtures.

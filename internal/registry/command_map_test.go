@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/thalesraymond/pokedexcli/api"
+	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
 // helpers shared across map tests

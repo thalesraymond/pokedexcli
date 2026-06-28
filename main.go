@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/thalesraymond/pokedexcli/registry"
+	"github.com/thalesraymond/pokedexcli/internal/registry"
 )
 
 func main() {
