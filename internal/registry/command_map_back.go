@@ -2,19 +2,15 @@ package registry
 
 import (
 	"fmt"
-
-	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
-func commandMapBack(cfg *PokedexContext, args ...string) error {
-	client := api.NewPokedexClient()
-
-	if cfg.LocationAreasPreviousURL == nil {
+func commandMapBack(context *PokedexContext, args ...string) error {
+	if context.LocationAreasPreviousURL == nil {
 		fmt.Println("you're on the first page")
 		return nil
 	}
 
-	locationAreaResponse, err := client.GetLocations(cfg.LocationAreasPreviousURL)
+	locationAreaResponse, err := context.Client.GetLocations(context.LocationAreasPreviousURL)
 
 	if err != nil {
 		return err
@@ -25,10 +21,10 @@ func commandMapBack(cfg *PokedexContext, args ...string) error {
 	}
 
 	if locationAreaResponse.Next != nil {
-		cfg.LocationAreasNextURL = locationAreaResponse.Next
+		context.LocationAreasNextURL = locationAreaResponse.Next
 	}
 	if locationAreaResponse.Previous != nil {
-		cfg.LocationAreasPreviousURL = locationAreaResponse.Previous
+		context.LocationAreasPreviousURL = locationAreaResponse.Previous
 	}
 
 

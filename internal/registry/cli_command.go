@@ -9,7 +9,7 @@ type CLICommand struct {
 type CLICommandInterface interface {
 	GetName() string
 	GetDescription() string
-	Execute(pokedexContext *PokedexContext, args ...string) error
+	Execute(context *PokedexContext, args ...string) error
 }
 
 func (c *CLICommand) GetName() string {
@@ -20,6 +20,6 @@ func (c *CLICommand) GetDescription() string {
 	return c.description
 }
 
-func (c *CLICommand) Execute(pokedexContext *PokedexContext, args ...string) error {
-	return c.callback(pokedexContext, args...)
+func (c *CLICommand) Execute(context *PokedexContext, args ...string) error {
+	return c.callback(context, args...)
 }

@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/thalesraymond/pokedexcli/internal/api"
 	"github.com/thalesraymond/pokedexcli/internal/registry"
 )
 
@@ -15,7 +16,8 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 
-	pokedexContext := &registry.PokedexContext{}
+	apiClient := api.NewPokedexClient()
+	context := registry.NewPokedexContext(apiClient)
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -30,7 +32,7 @@ func main() {
 		firstWord := strings.ToLower(fields[0])
 
 		if command, ok := commands[firstWord]; ok {
-			if err := command.Execute(pokedexContext, fields[1:]...); err != nil {
+			if err := command.Execute(context, fields[1:]...); err != nil {
 				fmt.Fprintln(os.Stderr, "Error executing command:", err)
 			}
 		} else {

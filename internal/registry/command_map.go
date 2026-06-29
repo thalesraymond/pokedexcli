@@ -2,14 +2,10 @@ package registry
 
 import (
 	"fmt"
-
-	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
 func commandMap(cfg *PokedexContext, args ...string) error {
-	client := api.NewPokedexClient()
-
-	locationAreaResponse, err := client.GetLocations(cfg.LocationAreasNextURL)
+	locationAreaResponse, err := cfg.Client.GetLocations(cfg.LocationAreasNextURL)
 
 	if err != nil {
 		return err

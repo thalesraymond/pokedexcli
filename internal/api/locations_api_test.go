@@ -10,9 +10,9 @@ import (
 // --- GetLocations ---
 
 func locationAreaResponse(count int, next, previous *string, names []string) LocationAreaResponse {
-	results := make([]LocationAreaDto, len(names))
+	results := make([]LocationArea, len(names))
 	for i, n := range names {
-		results[i] = LocationAreaDto{Name: n}
+		results[i] = LocationArea{Name: n}
 	}
 	return LocationAreaResponse{
 		Count:    count,

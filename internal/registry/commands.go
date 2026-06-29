@@ -30,6 +30,11 @@ func GetCLICommands() map[string]CLICommand {
 			description: "Explore a location area",
 			callback:    commandExplore,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Catch a pokemon",
+			callback:    commandCatch,
+		},
 	}
 
 	return commands

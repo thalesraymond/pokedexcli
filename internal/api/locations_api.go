@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-type LocationAreaDto struct {
+type LocationArea struct {
 	ID                   int                   `json:"id"`
 	Name                 string                `json:"name"`
 	GameIndex            int                   `json:"game_index"`
@@ -55,10 +55,10 @@ type EncounterDetail struct {
 }
 
 type LocationAreaResponse struct {
-	Count    int               `json:"count"`
-	Next     *string           `json:"next"`
-	Previous *string           `json:"previous"`
-	Results  []LocationAreaDto `json:"results"`
+	Count    int            `json:"count"`
+	Next     *string        `json:"next"`
+	Previous *string        `json:"previous"`
+	Results  []LocationArea `json:"results"`
 }
 
 func (c *PokedexClient) GetLocations(url *string) (LocationAreaResponse, error) {
@@ -100,32 +100,32 @@ func (c *PokedexClient) GetLocations(url *string) (LocationAreaResponse, error) 
 	return locationAreaResponse, nil
 }
 
-func (c *PokedexClient) GetLocationArea(locationAreaName string) (LocationAreaDto, error) {
+func (c *PokedexClient) GetLocationArea(locationAreaName string) (LocationArea, error) {
 	urlStr := Endpoints["location-area"] + "/" + locationAreaName
 
 	if val, ok := c.cache.Get(urlStr); ok {
-		var locationAreaDto LocationAreaDto
+		var locationAreaDto LocationArea
 		err := json.Unmarshal(val, &locationAreaDto)
 		if err != nil {
-			return LocationAreaDto{}, err
+			return LocationArea{}, err
 		}
 		return locationAreaDto, nil
 	}
 
 	res, err := c.httpClient.Get(urlStr)
 	if err != nil {
-		return LocationAreaDto{}, err
+		return LocationArea{}, err
 	}
 	defer res.Body.Close() //nolint:errcheck
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return LocationAreaDto{}, err
+		return LocationArea{}, err
 	}
 
 	c.cache.Set(urlStr, body)
 
-	var locationAreaDto LocationAreaDto
+	var locationAreaDto LocationArea
 	err = json.Unmarshal(body, &locationAreaDto)
 
 	if err != nil {
