@@ -12,7 +12,7 @@ type PokedexContext struct {
 	Client                   PokemonAPI
 	LocationAreasNextURL     *string
 	LocationAreasPreviousURL *string
-	Pokedex                  map[string]bool
+	Pokedex                  map[string]api.Pokemon
 }
 
 func NewPokedexContext(apiClient PokemonAPI) *PokedexContext {
@@ -20,6 +20,6 @@ func NewPokedexContext(apiClient PokemonAPI) *PokedexContext {
 		Client:                   apiClient,
 		LocationAreasNextURL:     nil,
 		LocationAreasPreviousURL: nil,
-		Pokedex:                  make(map[string]bool),
+		Pokedex:                  make(map[string]api.Pokemon),
 	}
 }

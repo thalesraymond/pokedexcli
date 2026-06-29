@@ -3,8 +3,6 @@ package registry
 import (
 	"fmt"
 	"math/rand"
-
-	"github.com/thalesraymond/pokedexcli/internal/api"
 )
 
 func commandCatch(cfg *PokedexContext, args ...string) error {
@@ -12,11 +10,10 @@ func commandCatch(cfg *PokedexContext, args ...string) error {
 		return fmt.Errorf("catch command requires a pokemon name")
 	}
 	pokemonName := args[0]
-	client := api.NewPokedexClient()
 
 	fmt.Printf("Throwing a Pokeball at %s...\n", pokemonName)
 
-	pokemon, err := client.GetPokemon(pokemonName)
+	pokemon, err := cfg.Client.GetPokemon(pokemonName)
 
 	if err != nil {
 		return err
@@ -25,6 +22,7 @@ func commandCatch(cfg *PokedexContext, args ...string) error {
 	randomNumber := rand.Intn(pokemon.BaseExperience)
 
 	if randomNumber < 50 {
+		cfg.Pokedex[pokemonName] = pokemon
 		fmt.Printf("You caught %s!\n", pokemonName)
 	} else {
 		fmt.Printf("%s escaped!\n", pokemonName)
